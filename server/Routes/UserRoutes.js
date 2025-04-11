@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User=require('../model');
+const {User}=require('../model');
 const router = express.Router();
 const dotenv = require("dotenv");
 
@@ -10,6 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET || assignment;
 
 // User Signup
 router.post("/signup", async (req, res) => {
+  console.log(req.body);
   try {
     const { name, email, password } = req.body;
 
@@ -26,6 +27,7 @@ router.post("/signup", async (req, res) => {
 
     res.status(200).json({ message: "User created successfully", user: newUser });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error signing up", error });
   }
 });

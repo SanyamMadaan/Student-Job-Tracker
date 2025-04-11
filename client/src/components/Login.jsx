@@ -12,7 +12,7 @@ export default function Login() {
     setError("");
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/user/login", {
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/login`, {
         email,
         password,
       });

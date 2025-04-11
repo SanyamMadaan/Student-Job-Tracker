@@ -1,4 +1,5 @@
 const express=require('express');
+require('./db');
 require('dotenv').config();
 const PORT=process.env.PORT || 3000;
 const cors=require('cors');
@@ -8,9 +9,10 @@ const JobRoutes=require('./Routes/JobRoutes');
 const app=express();
 
 app.use(cors());
+app.use(express.json());
 
 app.use('/api/v1/user',UserRoutes);
-app.use('api/v1/job',JobRoutes);
+app.use('/api/v1/job',JobRoutes);
 
 app.listen(PORT,()=>{
     console.log(`App is running on http://localhost:${PORT}`);

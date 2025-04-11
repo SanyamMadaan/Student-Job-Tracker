@@ -4,10 +4,10 @@ import axios from "axios";
 
 export default function AddJob() {
   const [company, setCompany] = useState("");
-  const [role, setRole] = useState("");
-  const [status, setStatus] = useState("Applied");
-  const [dateOfApplication, setDateOfApplication] = useState("");
-  const [link, setLink] = useState("");
+  const [Role, setRole] = useState("");
+  const [Status, setStatus] = useState("Applied");
+  const [DateOfApplication, setDateOfApplication] = useState("");
+  const [Link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -18,24 +18,26 @@ export default function AddJob() {
     setLoading(true);
     setError("");
 
-    if (!company || !role || !dateOfApplication) {
-      setError("Please fill all required fields.");
-      setLoading(false);
-      return;
-    }
-
     try {
+      if (!company || !Role || !DateOfApplication) {
+        setError("Please fill all required fields.");
+        setLoading(false);
+        return;
+      }
+  
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/job/add",
-        { company, role, status, dateOfApplication, link },
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/job/addjob`,
+        { company, Role, Status, DateOfApplication, Link },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       alert("Job added successfully!");
       navigate("/dashboard");
     } catch (err) {
+      console.log(err);
       setError(err.response?.data?.message || "Failed to add job.");
+
     } finally {
       setLoading(false);
     }
@@ -68,7 +70,7 @@ export default function AddJob() {
               type="text"
               className="w-full px-3 py-2 border rounded-md bg-gray-100 dark:bg-gray-700 dark:text-white"
               placeholder="Role"
-              value={role}
+              value={Role}
               onChange={(e) => setRole(e.target.value)}
             />
           </div>
@@ -77,7 +79,7 @@ export default function AddJob() {
             <label className="block text-gray-700 dark:text-gray-300">Status</label>
             <select
               className="w-full px-3 py-2 border rounded-md bg-gray-100 dark:bg-gray-700 dark:text-white"
-              value={status}
+              value={Status}
               onChange={(e) => setStatus(e.target.value)}
             >
               <option value="Applied">Applied</option>
@@ -92,7 +94,7 @@ export default function AddJob() {
             <input
               type="date"
               className="w-full px-3 py-2 border rounded-md bg-gray-100 dark:bg-gray-700 dark:text-white"
-              value={dateOfApplication}
+              value={DateOfApplication}
               onChange={(e) => setDateOfApplication(e.target.value)}
             />
           </div>
@@ -103,7 +105,7 @@ export default function AddJob() {
               type="text"
               className="w-full px-3 py-2 border rounded-md bg-gray-100 dark:bg-gray-700 dark:text-white"
               placeholder="Application link"
-              value={link}
+              value={Link}
               onChange={(e) => setLink(e.target.value)}
             />
           </div>

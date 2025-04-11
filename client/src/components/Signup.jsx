@@ -9,11 +9,13 @@ export default function SignUp() {
   const [error, setError] = useState("");
 
   const handleSignUp = async () => {
+    console.log(import.meta.env.VITE_BACKEND_URL); 
+
     setLoading(true);
     setError("");
 
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/signup`, {
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/signup`, {
         name,
         email,
         password,

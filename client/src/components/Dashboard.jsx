@@ -13,7 +13,7 @@ export default function Dashboard() {
   const fetchJobs = async () => {
     try {
       const token = localStorage.getItem("token");
-      const { data } = await axios.get("http://localhost:5000/api/job/list", {
+      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/job/list`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJobs(data);
@@ -22,13 +22,30 @@ export default function Dashboard() {
     }
   };
 
+  const updateJobStatus = async (jobId, newStatus) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.patch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/job/update-job/${jobId}`,
+        { Status: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setJobs((prevJobs) =>
+        prevJobs.map((job) => (job._id === jobId ? { ...job, Status: newStatus } : job))
+      );
+    } catch (error) {
+      console.error("Error updating job status:", error);
+    }
+  };
+
+
   const deleteJob = async (jobId) => {
     const confirmDelete = window.confirm("Do you really want to delete this job?");
     if (!confirmDelete) return;
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/job/delete/${jobId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/job/delete-job/${jobId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJobs(jobs.filter((job) => job._id !== jobId)); // Remove job from UI
@@ -68,8 +85,19 @@ export default function Dashboard() {
                   <tr key={job._id} className="text-center text-gray-800 dark:text-white">
                     <td className="border p-2">{job.company}</td>
                     <td className="border p-2">{job.Role}</td>
-                    <td className="border p-2">{job.Status}</td>
-                    <td className="border p-2">{job.DateOfApplication}</td>
+                    <td className="border p-2">
+                    <select
+                        value={job.Status}
+                        onChange={(e) => updateJobStatus(job._id, e.target.value)}
+                        className="border rounded-md p-1 bg-white dark:bg-gray-800"
+                      >
+                        <option value="Applied">Applied</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Offer">Offer</option>
+                      </select>
+                      </td>
+                    <td className="border p-2">{new Date(job.DateOfApplication).toLocaleDateString("en-GB")}</td>
                     <td className="border p-2">
                       <a href={job.Link} target="_blank" className="text-blue-500 underline">
                         View
