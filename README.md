@@ -32,7 +32,7 @@ The **Job Application Tracker** is a full-stack web application that helps users
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/job-tracker.git
+   git clone https://github.com/SanyamMadaan/Student-Job-Tracker.git
    cd client
    npm install
    ```
