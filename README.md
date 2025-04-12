@@ -48,7 +48,7 @@ The **Job Application Tracker** is a full-stack web application that helps users
    Create a `.env` file in the backend directory with:
    ```env
    PORT=3000
-   DB_URL=mongodb+srv://sanyam:Sanyam%407820@cluster0.h0ddjdt.mongodb.net/assignment
+   DB_URL=Your_DB_URL
    JWT_SECRET=assignment
    ```
 
